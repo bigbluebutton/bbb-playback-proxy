@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ $$ == 1 ]; then
+	echo "Startup script was run as init, re-execing using tini."
+	exec /sbin/tini -- $0 "$@"
+fi
+
+mkdir -p /run/nginx
+
+echo "Starting nginx periodic reload process..."
+while :; do
+	sleep 6h
+	echo "Reloading nginx..."
+	nginx -s reload
+done &
+
+echo "Starting nginx..."
+exec nginx -g 'daemon off;'
