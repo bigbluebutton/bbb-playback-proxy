@@ -32,8 +32,8 @@ node {
 
         gitBranch = sh(returnStdout: true, script: 'echo -n "$(basename '+scmVars.GIT_BRANCH+')"')
         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-id') {
-            app.push("${gitBranch}-${env.BUILD_NUMBER}")
-            app.push("${gitBranch}")
+            app.push("${dockerfile}-${env.BUILD_NUMBER}")
+            app.push("${dockerfile}")
         }
     }
 }
