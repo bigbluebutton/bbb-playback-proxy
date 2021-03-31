@@ -18,7 +18,7 @@ RUN apt-get update \
     && apt-get download bbb-playback bbb-playback-presentation \
     && dpkg -i --force-depends *.deb
 
-FROM alpine:3.11 AS bionic-230-apline3.11
+FROM alpine:3.13 AS alpine
 RUN apk add --no-cache nginx tini gettext \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
