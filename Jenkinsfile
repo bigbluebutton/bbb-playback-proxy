@@ -11,7 +11,7 @@ node {
          * docker build on the command line */
 
         gitRepo = sh(returnStdout: true, script: 'echo -n "$(basename $(dirname '+scmVars.GIT_URL+'))/$(basename '+scmVars.GIT_URL+' .git)"')
-        app = docker.build("${gitRepo}", "-f ${dockerfile} ./dockerfiles")
+        app = docker.build("${gitRepo}", "-f ./dockerfiles/${dockerfile}")
     }
 
     stage('Test image') {
