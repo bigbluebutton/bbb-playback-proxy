@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS playback-bionic-230-dev
+FROM ubuntu:18.04 AS playback-bionic-230
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get install -y language-pack-en \
@@ -18,7 +18,7 @@ RUN apt-get update \
     && apt-get download bbb-playback bbb-playback-presentation \
     && dpkg -i --force-depends *.deb
 
-FROM amazonlinux:2.0.20210219.0 AS bionic-230-dev-amazonlinux
+FROM amazonlinux:2.0.20210219.0 AS bionic-230-amazonlinux
 RUN yes | amazon-linux-extras install nginx1
 ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /sbin/tini
@@ -29,8 +29,8 @@ RUN chmod +x /sbin/tini
 RUN yum update && yum -y install gettext
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
-COPY --from=playback-bionic-230-dev /etc/bigbluebutton/nginx /etc/bigbluebutton/nginx/
-COPY --from=playback-bionic-230-dev /var/bigbluebutton/playback /var/bigbluebutton/playback/
+COPY --from=playback-bionic-230 /etc/bigbluebutton/nginx /etc/bigbluebutton/nginx/
+COPY --from=playback-bionic-230 /var/bigbluebutton/playback /var/bigbluebutton/playback/
 COPY nginx /etc/nginx/
 EXPOSE 80
 ENV NGINX_HOSTNAME=localhost
