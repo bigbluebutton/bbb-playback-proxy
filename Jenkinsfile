@@ -10,8 +10,9 @@ node {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        gitRepo = sh(returnStdout: true, script: 'echo -n "$(basename $(dirname '+scmVars.GIT_URL+'))/$(basename '+scmVars.GIT_URL+' .git)"')
-        app = docker.build("${gitRepo}", "-f ./dockerfiles/${dockerfile}")
+        // gitRepo = sh(returnStdout: true, script: 'echo -n "$(basename $(dirname '+scmVars.GIT_URL+'))/$(basename '+scmVars.GIT_URL+' .git)"')
+        gitRepo = sh(returnStdout: true, script: 'echo -n "$(basename $(dirname '+scmVars.GIT_URL+'))/'+dockerfile+'"')
+        app = docker.build("${gitRepo}", "-f dockerfiles/${dockerfile} .")
     }
 
     stage('Test image') {
