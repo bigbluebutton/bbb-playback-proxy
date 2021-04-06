@@ -25,7 +25,11 @@ RUN apk add --no-cache nginx tini gettext \
 RUN rm /etc/nginx/conf.d/default.conf
 COPY --from=bbb-playback-bionic-230-dev /etc/bigbluebutton/nginx /etc/bigbluebutton/nginx/
 COPY --from=bbb-playback-bionic-230-dev /var/bigbluebutton/playback /var/bigbluebutton/playback/
-COPY nginx /etc/nginx/
+COPY nginx/start /etc/nginx/start
+COPY nginx/dhparam.pem /etc/nginx/dhparam.pem
+COPY nginx/conf.d /etc/nginx/http.d/
+# This will be needed with alpine 3.14 since conf.d is being phased out.
+# RUN ln -s /etc/nginx/http.d/ /etc/nginx/conf.d
 EXPOSE 80
 ENV NGINX_HOSTNAME=localhost
 CMD [ "/etc/nginx/start", "-g", "daemon off;" ]
