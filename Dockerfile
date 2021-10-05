@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS playback-bionic-23-dev
+FROM ubuntu:18.04 AS playback-bionic-230
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get install -y language-pack-en \
@@ -11,7 +11,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64 \
 RUN apt-get update \
     && apt-get install -y yq
 RUN curl -sL https://ubuntu.bigbluebutton.org/repo/bigbluebutton.asc | apt-key add - \
-    && echo "deb https://ubuntu.bigbluebutton.org/bionic-23-dev bigbluebutton-bionic main" >/etc/apt/sources.list.d/bigbluebutton.list
+    && echo "deb https://ubuntu.bigbluebutton.org/bionic-230 bigbluebutton-bionic main" >/etc/apt/sources.list.d/bigbluebutton.list
 RUN useradd --system --user-group --home-dir /var/bigbluebutton bigbluebutton
 RUN touch /.dockerenv
 RUN apt-get update \
@@ -30,8 +30,8 @@ RUN chmod +x /sbin/tini
 RUN yum update && yum -y install gettext
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
-COPY --from=playback-bionic-23-dev /etc/bigbluebutton/nginx /etc/bigbluebutton/nginx/
-COPY --from=playback-bionic-23-dev /var/bigbluebutton/playback /var/bigbluebutton/playback/
+COPY --from=playback-bionic-230 /etc/bigbluebutton/nginx /etc/bigbluebutton/nginx/
+COPY --from=playback-bionic-230 /var/bigbluebutton/playback /var/bigbluebutton/playback/
 COPY nginx /etc/nginx/
 EXPOSE 80
 ENV NGINX_HOSTNAME=localhost
