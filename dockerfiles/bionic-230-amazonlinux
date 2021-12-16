@@ -18,7 +18,7 @@ RUN apt-get update \
     && apt-get download bbb-playback bbb-playback-presentation \
     && dpkg -i --force-depends *.deb
 
-FROM amazonlinux:2.0.20211001.0 AS amazonlinux
+FROM amazonlinux:2.0.20211201.0 AS amazonlinux
 
 FROM amazonlinux AS amazonlinux-base
 ENV TINI_VERSION v0.19.0
