@@ -14,8 +14,8 @@ node {
     stage('Push image') {
         gitBranch = sh(returnStdout: true, script: 'echo -n "$(basename '+scmVars.GIT_BRANCH+')"')
         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-id') {
-            app.push("${dockerfile}-${env.BUILD_NUMBER}")
-            app.push("${dockerfile}")
+            app.push("${dockerfile}-${baseimagetag}-${env.BUILD_NUMBER}")
+            app.push("${dockerfile}-${baseimagetag}")
         }
     }
 }
