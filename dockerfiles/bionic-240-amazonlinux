@@ -1,3 +1,6 @@
+ARG TAG=latest
+FROM amazonlinux:${TAG} AS amazonlinux
+
 FROM ubuntu:18.04 AS playback-bionic-240
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
@@ -17,9 +20,6 @@ RUN touch /.dockerenv
 RUN apt-get update \
     && apt-get download bbb-playback bbb-playback-presentation \
     && dpkg -i --force-depends *.deb
-
-ARG TAG=latest
-FROM amazonlinux:${TAG} AS amazonlinux
 
 FROM amazonlinux AS amazonlinux-base
 ENV TINI_VERSION v0.19.0
