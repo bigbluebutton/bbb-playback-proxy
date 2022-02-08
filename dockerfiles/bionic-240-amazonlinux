@@ -1,7 +1,3 @@
-ARG TAG=latest
-
-FROM amazonlinux:${TAG} AS amazonlinux
-
 FROM ubuntu:18.04 AS playback-bionic-240
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
@@ -22,6 +18,9 @@ RUN apt-get update \
     && apt-get download bbb-playback bbb-playback-presentation \
     && dpkg -i --force-depends *.deb
 
+ARG TAG=latest
+FROM amazonlinux:${TAG} AS amazonlinux
+
 FROM amazonlinux AS amazonlinux-base
 ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /sbin/tini
@@ -32,8 +31,11 @@ RUN chmod +x /sbin/tini
 RUN yum -y install redhat-rpm-config
 
 FROM amazonlinux-base AS bbb-playback-proxy
-RUN yes | amazon-linux-extras install nginx1
+ENV NGINX_VERSION 1.20.2
 RUN yum -y install gettext
+COPY nginx/repo /etc/yum.repos.d/nginx.repo
+RUN yum install yum-utils -y
+RUN yum install nginx-${NGINX_VERSION} -y
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 COPY --from=playback-bionic-240 /etc/bigbluebutton/nginx /etc/bigbluebutton/nginx/
