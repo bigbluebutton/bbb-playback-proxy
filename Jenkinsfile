@@ -8,7 +8,7 @@ node {
 
     stage('Build images') {
         gitRepo = sh(returnStdout: true, script: 'echo -n "$(basename $(dirname '+scmVars.GIT_URL+'))/$(basename '+scmVars.GIT_URL+' .git)":'+dockerfile+'-'+baseimagetag)
-        app = docker.build("${gitRepo}", "--pull --build-arg TAG=${baseimagetag} --target bbb-playback-proxy -f dockerfiles/${dockerfile} .")
+        app = docker.build("${gitRepo}", "--pull --build-arg TAG=${baseimagetag} --build-arg NGINX_VERSION=${nginxversion} --target bbb-playback-proxy -f dockerfiles/${dockerfile} .")
     }
 
     stage('Push image') {
