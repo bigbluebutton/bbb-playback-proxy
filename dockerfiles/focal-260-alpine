@@ -21,7 +21,7 @@ FROM alpine:3.16 AS bbb-playback-proxy
 RUN apk add --no-cache nginx tini gettext \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
-RUN rm /etc/nginx/conf.d/default.conf
+RUN rm /etc/nginx/http.d/default.conf
 COPY --from=bbb-playback /usr/share/bigbluebutton/nginx/ /usr/share/bigbluebutton/nginx/
 COPY --from=bbb-playback /var/bigbluebutton/playback /var/bigbluebutton/playback/
 COPY nginx/start /etc/nginx/start
