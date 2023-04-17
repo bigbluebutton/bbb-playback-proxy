@@ -30,7 +30,7 @@ RUN chmod +x /sbin/tini
 RUN yum -y install redhat-rpm-config
 
 FROM amazonlinux-base AS bbb-playback-proxy
-ARG NGINX_VERSION=1.22.1
+ARG NGINX_VERSION=1.24.0
 ENV NGINX_VERSION=${NGINX_VERSION}
 RUN yum -y install gettext
 COPY nginx/repo /etc/yum.repos.d/nginx.repo
