@@ -1,14 +1,16 @@
 node {
     def app
-    def scmVars = checkout scm
+    def scmVars
 
     stage('Clone repository') {
-        checkout scm
+        scmVars = checkout scm
     }
 
     stage('Build images') {
         gitRepo = sh(returnStdout: true, script: 'echo -n "$(basename $(dirname '+scmVars.GIT_URL+'))/$(basename '+scmVars.GIT_URL+' .git)":'+dockerfile+'-'+baseimagetag)
-        app = docker.build("${gitRepo}", "--pull --build-arg TAG=${baseimagetag} --build-arg NGINX_VERSION=${nginxversion} --target bbb-playback-proxy -f dockerfiles/${dockerfile} .")
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-id') {
+            app = docker.build("${gitRepo}", "--pull --build-arg TAG=${baseimagetag} --build-arg NGINX_VERSION=${nginxversion} --target bbb-playback-proxy -f dockerfiles/${dockerfile} .")
+        }
     }
 
     stage('Push image') {
