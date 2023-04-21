@@ -18,6 +18,7 @@ node {
         withDockerRegistry([ credentialsId: "dockerhub-id", url: "" ]) {
             app.push("${dockerfile}-${baseimagetag}-${env.BUILD_NUMBER}")
             app.push("${dockerfile}-${baseimagetag}")
+            app.push("${dockerfile}")
         }
     }
 }
