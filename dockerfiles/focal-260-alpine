@@ -31,7 +31,9 @@ COPY --from=bbb-playback /var/bigbluebutton/playback /var/bigbluebutton/playback
 COPY nginx/start /etc/nginx/start
 COPY nginx/dhparam.pem /etc/nginx/dhparam.pem
 COPY nginx/conf.d /etc/nginx/http.d/
+# Override *.nginx to solve issue with protected recordings given incompatibility of video location.
+COPY bigbluebutton/nginx/playback-video.nginx /etc/bigbluebutton/nginx/
+
 EXPOSE 80
-EXPOSE 443
 ENV NGINX_HOSTNAME=localhost
 CMD [ "/etc/nginx/start", "-g", "daemon off;" ]
