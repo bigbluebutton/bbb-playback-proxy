@@ -1,4 +1,4 @@
-ARG TAG=3.20
+ARG TAG=3.22
 FROM alpine:${TAG} AS alpine
 
 FROM ubuntu:22.04 AS bbb-playback
